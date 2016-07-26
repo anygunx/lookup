@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import sys
 import commands
@@ -6,6 +7,7 @@ import datetime
 import time
 import sched  
 import threading
+import platform
 
 servers = [
 	("gateway",True,5,30),
@@ -142,7 +144,43 @@ def logservers():
 	print 'log servers'
 	Timer(1800,chkservers).start()
 
-chkservers();
-logservers();
 
-	
+
+def createdaemon():
+   
+    try:
+        if os.fork() > 0: os._exit(0)
+    except OSError, error:
+        print 'fork #1 failed: %d (%s)' % (error.errno, error.strerror)
+        os._exit(1)    
+    os.chdir('/')
+    os.setsid()
+    os.umask(0)
+    try:
+        pid = os.fork()
+        if pid > 0:
+            print 'daemon pid %d' % pid
+            os._exit(0)
+    except OSError, error:
+        print 'fork #2 failed: %d (%s)' % (error.errno, error.strerror)
+        os._exit(1)
+
+    sys.stdout.flush()
+    sys.stderr.flush()
+    si = file("/dev/null", 'r')
+    so = file("/dev/null", 'a+')
+    se = file("/dev/null", 'a+', 0)
+    os.dup2(si.fileno(), sys.stdin.fileno())
+    os.dup2(so.fileno(), sys.stdout.fileno())
+    os.dup2(se.fileno(), sys.stderr.fileno())
+
+    chkservers();
+    logservers();
+
+if __name__ == '__main__': 
+    if platform.system() == "Linux":
+        createdaemon()
+    else:
+        os._exit(0)
+
+
