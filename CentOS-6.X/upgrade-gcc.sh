@@ -16,6 +16,12 @@ if [ ! -f "gcc-${VERSION}.tar.gz" ]; then
 
 fi
 
+if [ ! -f "gcc-${VERSION}.tar.gz" ]; then
+
+  wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-${VERSION}/gcc-${VERSION}.tar.gz
+
+fi
+
 
 
 if [ ! -x "gcc-${VERSION}" ]; then
