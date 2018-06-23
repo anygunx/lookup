@@ -5,7 +5,7 @@ echo "Upgrade ACE ${VERSION}"
 
 if [ ! -f "ACE-src-${VERSION}.tar.bz2" ]; then
 
-  wget ftp://10.10.10.252/pub/develop-kits/ACE-src-${VERSION}.tar.bz2
+  wget http://download.dre.vanderbilt.edu/previous_versions/ACE-src-${VERSION}.tar.bz2
 
 fi
 
