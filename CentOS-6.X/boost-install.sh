@@ -1,23 +1,30 @@
 #!/bin/sh
 
-VERSION=1_55_0
 
-echo "Upgrade gcc ${VERSION}"
+MAJOR_NUMBER=1
+MINOR_NUMBER=55
+REVISION_NUMBER=0
 
-if [ ! -f "boost_${VERSION}.zip" ]; then
 
-  wget ftp://10.10.10.252/pub/develop-kits/boost_${VERSION}.zip
+VERSION0=${MAJOR_NUMBER}.${MINOR_NUMBER}.${REVISION_NUMBER}
+FILENAME=boost_${MAJOR_NUMBER}_${MINOR_NUMBER}_${REVISION_NUMBER}.tar.gz
+PATHNAME=boost_${MAJOR_NUMBER}_${MINOR_NUMBER}_${REVISION_NUMBER}
+echo "Upgrade gcc ${VERSION0}"
+
+if [ ! -f ${FILENAME} ]; then
+
+  wget https://jaist.dl.sourceforge.net/project/boost/boost/${VERSION0}/${FILENAME}
 
 fi
 
 
-if [ ! -x "boost_${VERSION}" ]; then
-  7za x boost_${VERSION}.zip
+if [ ! -x ${PATHNAME} ]; then
+   tar vcpf ${FILENAME}
 fi
 
-cd boost_${VERSION}
+cd ${PATHNAME}
 
 ls
-`pwd` ./bootstarp.sh --with-system --with-filesystem 
+`pwd` ./bootstarp.sh 
 
 ./b2 install
